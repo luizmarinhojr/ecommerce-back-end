@@ -33,22 +33,22 @@ CREATE TABLE addresses (
 	FOREIGN KEY (customer_id) REFERENCES customers(id)
 );
 
-CREATE TABLE payments_details (
+CREATE TABLE payment_details (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	order_id BIGINT NOT NULL,
 	provider VARCHAR(40) NOT NULL,
 	status ENUM(
-		'Pending Payment',
-		'Processing',
-		'Paid',
-		'Failed',
-		'Cancelled',
-		'Refunded',
-		'Partially Refunded',
-		'On Hold',
-		'Completed',
-		'Authorized',
-		'Declined'
+		'PENDING_PAYMENT',
+        'PROCESSING',
+        'PAID',
+        'FAILED',
+        'CANCELLED',
+        'REFUNDED',
+        'PARTIALLY_REFUNDED',
+        'ON_HOLD',
+        'COMPLETED',
+        'AUTHORIZED',
+        'DECLINED'
 		) NOT NULL,
 	created_at DATETIME NOT NULL,
 	modified_at DATETIME,
@@ -59,7 +59,6 @@ CREATE TABLE orders (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	customer_id BIGINT NOT NULL,
 	address_id BIGINT NOT NULL,
-	payment_id BIGINT NOT NULL,
 	total DECIMAL(12,2) NOT NULL,
 	created_at DATETIME NOT NULL,
 	modified_at DATETIME,
@@ -67,11 +66,10 @@ CREATE TABLE orders (
 	external_id BINARY(16) NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (customer_id) REFERENCES customers(id),
-	FOREIGN KEY (address_id) REFERENCES addresses(id),
-	FOREIGN KEY (payment_id) REFERENCES payments_details(id)
+	FOREIGN KEY (address_id) REFERENCES addresses(id)
 );
 
-CREATE TABLE product_inventory (
+CREATE TABLE products_inventory (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	quantity INT NOT NULL,
 	created_at DATETIME NOT NULL,
@@ -100,7 +98,7 @@ CREATE TABLE products (
 	modified_at DATETIME,
 	external_id BINARY(16) NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (inventory_id) REFERENCES product_inventory(id)
+	FOREIGN KEY (inventory_id) REFERENCES products_inventory(id)
 );
 
 CREATE TABLE cart_items (
@@ -151,5 +149,5 @@ CREATE TABLE product_pictures (
 ALTER TABLE products
 ADD FOREIGN KEY (main_picture_id) REFERENCES product_pictures(id);
 
-ALTER TABLE payments_details
+ALTER TABLE payment_details
 ADD FOREIGN KEY (order_id) REFERENCES orders(id);

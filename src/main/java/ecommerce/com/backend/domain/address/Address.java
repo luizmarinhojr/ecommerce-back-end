@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
@@ -33,9 +34,12 @@ public class Address {
 
     private String state;
 
+    @Column(name = "postal_code")
+    private String postalCode;
+
     private String country;
 
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
     @Column(name = "external_id")
     private UUID external_id;
 
