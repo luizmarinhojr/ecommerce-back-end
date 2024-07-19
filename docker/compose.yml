@@ -1,0 +1,15 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql:9.0.0-oracle
+    ports:
+      - '4000:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: password123
+      MYSQL_DATABASE: ecommerce_db
+
+  phpmyadmin:
+    image: phpmyadmin:5.2-apache
+    ports:
+      - '5001:80'
