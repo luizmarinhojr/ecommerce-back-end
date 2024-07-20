@@ -3,7 +3,7 @@ package ecommerce.com.backend.domain.customer;
 import ecommerce.com.backend.domain.address.Address;
 import ecommerce.com.backend.domain.order.Order;
 import ecommerce.com.backend.domain.shoppingSession.ShoppingSession;
-import ecommerce.com.backend.domain.user.UserAuthentication;
+import ecommerce.com.backend.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,7 +29,7 @@ public class Customer {
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserAuthentication user;
+    private User user;
 
     private String name;
 
