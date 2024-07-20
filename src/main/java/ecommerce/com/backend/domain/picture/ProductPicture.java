@@ -1,4 +1,4 @@
-package ecommerce.com.backend.domain.pictures;
+package ecommerce.com.backend.domain.picture;
 
 import ecommerce.com.backend.domain.product.Product;
 import jakarta.persistence.*;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductPictures {
+public class ProductPicture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +25,9 @@ public class ProductPictures {
 
     @OneToOne(mappedBy = "mainPicture")
     private Product mainProductPicture;
+
+    public ProductPicture (Product product, String url) {
+        this.product = product;
+        this.url = url;
+    }
 }

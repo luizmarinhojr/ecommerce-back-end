@@ -36,4 +36,8 @@ public class Inventory {
 
     @OneToOne(mappedBy = "inventory")
     private Product product;
+
+    public Inventory(InventoryDtoIn inventoryIn) {
+        this.quantity = inventoryIn.quantity();
+    }
 }

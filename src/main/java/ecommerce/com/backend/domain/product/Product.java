@@ -4,16 +4,19 @@ import ecommerce.com.backend.domain.cart.CartItem;
 import ecommerce.com.backend.domain.category.Category;
 import ecommerce.com.backend.domain.inventory.Inventory;
 import ecommerce.com.backend.domain.orderItem.OrderItem;
-import ecommerce.com.backend.domain.pictures.ProductPictures;
+import ecommerce.com.backend.domain.picture.ProductPicture;
+import ecommerce.com.backend.domain.picture.ProductPictureDtoIn;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,11 +35,11 @@ public class Product {
 
     private String description;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "main_picture_id")
-    private ProductPictures mainPicture;
+    private ProductPicture mainPicture;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "inventory_id", nullable = false)
     private Inventory inventory;
 
@@ -53,7 +56,7 @@ public class Product {
     private UUID externalId;
 
     @OneToMany(mappedBy = "product")
-    private Set<ProductPictures> productPictures;
+    private Set<ProductPicture> productPictures;
 
     @OneToMany(mappedBy = "product")
     private Set<OrderItem> orderItems;
@@ -66,4 +69,26 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private Set<CartItem> cartItems;
+
+
+    public Product(ProductDtoIn productIn) {
+        this.name = productIn.name();
+        this.description = productIn.description();
+        this.inventory = new Inventory(productIn.inventory());
+    }
+
+    public void setMainPicture(ProductPictureDtoIn mainPictureDto) {
+        if (mainPictureDto != null) {
+            this.mainPicture = new ProductPicture(Product.this, mainPictureDto.url());
+        }
+    }
+
+    public void setProductPictures(Set<ProductPictureDtoIn> productPicturesDto) {
+        if (productPicturesDto != null) {
+            this.productPictures = new HashSet<>();
+            for (ProductPictureDtoIn picture : productPicturesDto) {
+                this.productPictures.add(new ProductPicture(Product.this, picture.url()));
+            }
+        }
+    }
 }
